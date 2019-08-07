@@ -15,15 +15,20 @@ int main(void)
         for(int j=1;j<=3;j++)
         {
             tmp=pang;
-            tmp[i]=j;
             bool is_end = true;
             int now_N=N;
             int cnt=1;
             int now_color = j;
-            int up=j-1;
-            int down=j+1;
+            int up=i-1;
+            int down=i+1;
+            
             while(is_end)
             {
+                if((tmp[up] != tmp[down])) break;// || up < 0 || down >= N) break;
+                if(up+1 == down-1) {cnt=1; now_color=j;}
+                else {cnt=0; now_color=tmp[up];}
+                                
+                
                 while(up >= 0)
                 {
                     if(tmp[up]==now_color)
@@ -50,15 +55,14 @@ int main(void)
                 {
                     now_N-=cnt;
                 }
-                if(left )
-
-                
-
+                else is_end=false;
             }
+            if(min > now_N)  min = now_N;
             
 
         }
     }
+    printf("%d\n", min);
 
     return 0;
 }
