@@ -1,7 +1,7 @@
 #include<iostream>
 #include<vector>
 using namespace std;
-//못품
+//품
 int main(void)
 {
     int N=0;    
@@ -24,7 +24,7 @@ int main(void)
             
             while(is_end)
             {
-                if((tmp[up] != tmp[down])) break;// || up < 0 || down >= N) break;
+                //if((tmp[up] != tmp[down])) break;// || up < 0 || down >= N) break;
                 if(up+1 == down-1) {cnt=1; now_color=j;}
                 else {cnt=0; now_color=tmp[up];}
                                 
