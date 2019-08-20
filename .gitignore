@@ -416,3 +416,5 @@ healthchecksdb
 MigrationBackup/
 
 # End of https://www.gitignore.io/api/c++,windows,visualstudio,visualstudiocode
+
+testcase.txt
