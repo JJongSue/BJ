@@ -114,6 +114,7 @@ void bfs(int x, int y, int now, bool is_remove)
         return;
     if (is_visit[y][x])
         return;
+    if(ans ==N*M) return;
     if (y == N - 1 && x == M - 1)
     {
         ans = now;
