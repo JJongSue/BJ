@@ -1,82 +1,133 @@
 #include<iostream>
 #include<vector>
+#include <queue>
 using namespace std;
-static vector<vector<int>> map;
 
-static int N, ans = 0;
-void go_map(int now, int cnt);
+
 int main()
 {
-    scanf("%d", &N);
-    map.assign(N, vector<int>(N, 0));
-    int max = 0;
+	int N, ans=0;
+	vector<vector<int>> map;
+	scanf("%d", &N);
+	map.assign(N, vector<int>(N, 0));
+	int max = 0;
+	for (int i = 0; i < N; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			scanf(" %d", &map[i][j]);
+
+		}
+	}
+	for (int j = 0; j < N; j++)
+	{
+		int ur = 0, ul = 0, dl = 0, dr = 0;
+		for (int i = 0; i < N; i++)
+		{
+			if (j + i < N && map[i][j+1] != 0) {
+				ur++;
+			}
+			if (j - i >= 0 && map[i][j-i] != 0) {
+				ul++;
+			}
+			if (j + i < N && map[N - 1 - i][j+i] != 0) {
+				dr++;
+			}
+			if (j - i >= 0 && map[N - 1 - i][j-i] != 0) {
+				dl++;
+			}
+            
+		}
+
+		for (int i = 0; i < N; i++)
+		{
+			if (j + i < N && map[i][j] != 0) {
+				map[i][j+i] += (ur - 1);
+			}
+			if (j - i >= 0 && map[i][j] != 0) {
+				map[i][j-i] += (ul - 1);
+			}
+			if (j + i < N && map[N - 1 + i][j] != 0) {
+				map[N - 1 - i][j] += (dr-1);
+			}
+			if (j - i >= 0 && map[i][j] != 0) {
+				map[N - 1 - i][j-i] += (dl-1);
+			}
+		}
+	}
     for(int i=0;i<N;i++)
     {
         for(int j=0;j<N;j++)
         {
-            scanf(" %d", &map[i][j]);
-            
-        }
+            printf("%2d ", map[i][j]);
+        }printf("\n");
     }
-    for(int j=0;j<N;j++)
+	bool is_end = false;
+	while (!is_end)
+	{
+		int sum = 0;
+		queue<pair<int, int>> empty_q, que;
+		for (int i = 0; i < N; i++)
+		{
+			if (sum == -1) break;
+			for (int j = 0; j < N; j++)
+			{
+				if (sum == -1) break;
+				if (map[i][j] == 1) sum++;
+				if (map[i][j] > 1) sum = -1;
+			}				
+		}
+		if (sum != -1) break;
+		int max = 1;
+		for (int i = 0; i < N; i++)
+		{
+			for (int j = 0; j < N; j++)
+			{
+				if (max < map[i][j])
+				{
+					max = map[i][j];
+					que = empty_q;
+					que.push(pair<int, int>(j, i));
+				}
+				else if (max == map[i][j])
+				{
+					que.push(pair<int, int>(j, i));
+				}
+			}
+		}
+        if(max == 1) break;
+		while (!que.empty())
+		{
+			int x = que.front().first;
+			int y = que.front().second;
+			que.pop();
+			for (int i = 1; i < N; i++)
+			{
+				if (x - i >= 0 && y - i >= 0 && map[y - i][x - i] > 0) {
+					map[y - i][x - i]--;
+				}
+				if (x + i < N && y - i >= 0 && map[y - i][x + i] > 0) {
+					map[y - i][x + i]--;
+				}
+				if (x - i >= 0 && y + i < N && map[y + i][x - i] > 0) {
+					map[y + i][x - i]--;
+				}
+				if (x + i < N && y + i < N && map[y + i][x + i] > 0) {
+					map[y + i][x + i]--;
+				}
+				map[y][x] = 0;
+			}
+		}
+	}int dap = 0;
+    for(int i=0;i<N;i++)
     {
-        int ur =0, ul = 0, dl=0, dr=0;
-        for(int i=0;i<N;i++)
+        for(int j=0;j<N;j++)
         {
-            if(j+i<N && map[i][j]==1){
-                ur++;
-            }
-            if(j-1>=0 && map[i][j]==1){
-                ul++;
-            }
-            if(j+i<N && map[N-1+i][j]==1){
-                dr++;
-            }
-            if(j-1>=0 && map[i][j]==1){
-                dl++;
-            }
+            if(map[i][j] == 1) dap++;
         }
     }
-    
-    go_map(0,0);
-    printf("%d\n", ans);
 
-}
-void go_map(int now, int cnt)
-{
-    printf("%d\n", now);
-    if(cnt == 10)
-    {
-        ans = 10;
-        return;
-    }
-    if(now == N*N-1)
-    {
-        if(map[N-1][N-1]==1)
-        {
-            if(ans < cnt+1) ans=cnt+1;
-        }
-        else{
-            if(ans < cnt) ans = cnt;
-        }
-        return;
-    }
-    if(map[now/N][now%N])
-    {
-        
-        vector<vector<bool>> copy_map =map;
-        for(int i=now/N+1;i<N;i++)
-        {
-            if(now%N+(i-now/N) < N) map[i][now%N+(i-now/N)]=false;
-            if(now%N-(i-now/N) >= 0) map[i][now%N-(i-now/N)]=false;
-        }
-        go_map(now+1, cnt+1);
-        map=copy_map;
-        go_map(now+1, cnt);
-        return;
-    }
-    else{
-        go_map(now+1, cnt);
-        return;
-    }
+
+	printf("%d\n", dap);
+
 }
