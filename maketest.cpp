@@ -6,10 +6,17 @@ int main(void)
     string filePath = "testcase.txt";
     ofstream writeFile(filePath.data());
     if(writeFile.is_open()){
-        writeFile << "50 50 2500\n";
-        for(int i=0;i<50;i++)
+        writeFile << "1000 1000\n";
+        for(int i=0;i<999;i++)
         {
-            for(int j=0;j<50;j++)
+            for(int j=0;j<1000;j++)
+            {
+                writeFile << 0;
+            }writeFile << "\n";
+        }
+        for(int i=0;i<1;i++)
+        {
+            for(int j=0;j<1000;j++)
             {
                 writeFile << 1;
             }writeFile << "\n";

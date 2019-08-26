@@ -3,7 +3,7 @@
 using namespace std;
 static int N, M;
 static vector<vector<char>> map;
-static int ans = 50*50*10;
+static int ans = 50*50*7;
 static int cnt;
 bool is_map(int x, int y);
 void bfs(int x, int y, int product, int now);
