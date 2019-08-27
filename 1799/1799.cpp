@@ -21,10 +21,11 @@ int main()
 	}
 	for (int j = 0; j < N; j++)
 	{
+        //printf("%d\n", j);
 		int ur = 0, ul = 0, dl = 0, dr = 0;
 		for (int i = 0; i < N; i++)
 		{
-			if (j + i < N && map[i][j+1] != 0) {
+			if (j + i < N && map[i][j+i] != 0) {
 				ur++;
 			}
 			if (j - i >= 0 && map[i][j-i] != 0) {
@@ -38,30 +39,39 @@ int main()
 			}
             
 		}
-
-		for (int i = 0; i < N; i++)
-		{
-			if (j + i < N && map[i][j] != 0) {
-				map[i][j+i] += (ur - 1);
-			}
-			if (j - i >= 0 && map[i][j] != 0) {
-				map[i][j-i] += (ul - 1);
-			}
-			if (j + i < N && map[N - 1 + i][j] != 0) {
-				map[N - 1 - i][j] += (dr-1);
-			}
-			if (j - i >= 0 && map[i][j] != 0) {
-				map[N - 1 - i][j-i] += (dl-1);
-			}
-		}
-	}
-    for(int i=0;i<N;i++)
+       /* for(int i=0;i<N;i++)
     {
         for(int j=0;j<N;j++)
         {
             printf("%2d ", map[i][j]);
         }printf("\n");
-    }
+    }*/
+
+        //printf("1 %d ur:%d ul:%d dr:%d dl:%d\n\n\n", j, ur, ul, dr, dl);
+		for (int i = 0; i < N; i++)
+		{
+			if (j + i < N && map[i][i+j] != 0 && j!=0) {
+				map[i][j+i] += (ur - 1);
+			}
+			if (j - i >= 0 && map[i][j-i] != 0) {
+				map[i][j-i] += (ul - 1);
+			}
+			if (j + i < N && map[N - 1 - i][i+j] != 0 && j!=0) {
+				map[N - 1 - i][j+i] += (dr-1);
+			}
+			if (j - i >= 0 && map[N-1-i][j-i] != 0 ) {
+				map[N - 1 - i][j-i] += (dl-1);
+			}
+		}
+        //printf("2 %d\n", j);
+	}
+    /*for(int i=0;i<N;i++)
+    {
+        for(int j=0;j<N;j++)
+        {
+            printf("%2d ", map[i][j]);
+        }printf("\n");
+    }*/
 	bool is_end = false;
 	while (!is_end)
 	{
@@ -95,7 +105,7 @@ int main()
 				}
 			}
 		}
-        if(max == 1) break;
+        if(max == 2) break;
 		while (!que.empty())
 		{
 			int x = que.front().first;
@@ -119,15 +129,17 @@ int main()
 			}
 		}
 	}int dap = 0;
+    int two = 0;
     for(int i=0;i<N;i++)
     {
         for(int j=0;j<N;j++)
         {
             if(map[i][j] == 1) dap++;
+            if(map[i][j] == 2) two++;
         }
     }
 
 
-	printf("%d\n", dap);
+	printf("%d\n", dap+two/2);
 
 }
