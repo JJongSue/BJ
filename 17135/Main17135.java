@@ -1,5 +1,7 @@
 package boj17135;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
 
 public class Main17135 {
@@ -7,6 +9,17 @@ public class Main17135 {
 		static int []archer = new int[3];
 		static boolean [][][]map;
 		static int ans;
+		static Queue<pair> q = new LinkedList<pair>();
+		static class pair{
+			int x;
+			int y;
+			public pair(int x, int y) {
+				super();
+				this.x = x;
+				this.y = y;
+			}
+			
+		}
 		public static void main(String[] args) {
 			Scanner sc = new Scanner(System.in);
 			N = sc.nextInt();
@@ -34,7 +47,7 @@ public class Main17135 {
 				if(ans < first) ans = first;
 				return;
 			}
-			if(now == N) return;
+			if(now == M) return;
 			//System.out.println(now+" "+cnt);
 			archer[cnt]= now;
 			set_arc(now+1, cnt+1);
@@ -44,6 +57,7 @@ public class Main17135 {
 		}
 		static int do_game()
 		{
+			q = new LinkedList<pair>();
 			int cnt=0;
 			boolean [][][] map2 = new boolean[N][M][2];
 			for(int i=0;i<N;i++)
@@ -65,7 +79,7 @@ public class Main17135 {
 						if(is_shoot) break;
 						for(int k=archer[i]-j+1;k<=archer[i];k++)
 						{
-							int y = N-1+k-archer[i]-1+j;
+							int y = N-1-k+archer[i]+1-j;
 							if(is_map(k, y))
 							{
 								if(map[y][k][0])
@@ -74,6 +88,7 @@ public class Main17135 {
 									{
 										map[y][k][1] =true;
 										cnt++;
+										q.add(new pair(k, y));
 									}
 										is_shoot = true;
 										break;
@@ -84,7 +99,7 @@ public class Main17135 {
 						if(is_shoot) break;
 						for(int k=archer[i]+1;k<=archer[i]+j-1;k++)
 						{
-							int y = N-1-k+archer[i]+1-j;
+							int y = N-1+k-archer[i]+1-j;
 							if(is_map(k, y))
 							{
 								if(map[y][k][0])
@@ -92,19 +107,21 @@ public class Main17135 {
 									if(!map[y][k][1])
 									{
 										map[y][k][1] =true;
+										q.add(new pair(k, y));
 										cnt++;
 									}
-
 										is_shoot = true;
-										break;
-									
+										break;									
 								}
 							}							
 						}
-					}
-					
-					
-					
+					}					
+				}
+				while(!q.isEmpty())
+				{
+					pair tmp = q.poll();
+					map[tmp.y][tmp.x][0]=false;
+					map[tmp.y][tmp.x][1]=false;
 				}
 				for(int i=N-1;i>=1;i--)
 				{
@@ -118,6 +135,15 @@ public class Main17135 {
 					map[0][i][0]=false;
 					map[0][i][1]=false;
 				}
+				
+				/*for(int i=0;i<N;i++)
+				{
+					for(int j=0;j<M;j++)
+					{
+						if(map[i][j][0]) System.out.print(1+" ");
+						else System.out.print(0+" ");
+					}System.out.println();
+				}System.out.println(cnt+"\n");*/
 				
 				
 			}
