@@ -163,7 +163,7 @@ void select_num(int now, int cnt, int sum)
         return;
     if (cnt == dis.size()-1)
     {
-        ans = sum;
+        if(ans > sum) ans = sum;
         return;
     }
     for (int i = 1; i < dis.size(); i++)
@@ -171,7 +171,7 @@ void select_num(int now, int cnt, int sum)
         if (!is_visit[i])
         {
             is_visit[i] = true;
-            select_num(i, cnt + 1, sum + dis_map[now][i]);
+            select_num(i, cnt + 1, sum + dis[now][i]);
             is_visit[i] = false;
         }
     }
